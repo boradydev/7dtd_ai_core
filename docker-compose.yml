@@ -1,0 +1,91 @@
+services:
+  ollama:
+    image: ollama/ollama
+    container_name: ollama
+    restart: unless-stopped
+    environment:
+      - OLLAMA_KEEP_ALIVE=-1
+    entrypoint: [ "/bin/sh", "-c", "/bin/ollama serve & sleep 5 && ollama run llama3 '' && wait" ]
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+    networks:
+      - ai_network
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [ gpu ]
+
+  7dtdserver:
+    image: vinanrra/7dtd-server
+    container_name: 7dtdserver
+    environment:
+      - LINUXGSM_VERSION=v25.2.0     # Change to use another version of LinuxGSM, if not working
+      - START_MODE=0                 # Change between START MODES
+      - VERSION=stable               # Change between 7 days to die versions
+      - PUID=1000                    # Remember to use same as your user
+      - PGID=1000                    # Remember to use same as your user
+      - TimeZone=Europe/Moscow      # Optional - Change Timezone
+      - TEST_ALERT=NO                # Optional - Send a test alert
+      - UPDATE_MODS=NO               # Optional - This will allow mods to be update on start, each mod also need to have XXXX_UPDATE=YES to update on start
+      - MODS_URLS=""                 # Optional - Mods urls to install, must be ZIP or RAR.
+      - ALLOC_FIXES=YES               # Optional - Install ALLOC FIXES
+      - ALLOC_FIXES_UPDATE=NO        # Optional - Update Allocs Fixes before server start
+      - UNDEAD_LEGACY=NO             # Optional - Install Undead Legacy mod, if DARKNESS_FALLS it's enable will not install anything
+      - UNDEAD_LEGACY_VERSION=stable # Optional - Undead Legacy version
+      - UNDEAD_LEGACY_UPDATE=NO      # Optional - Update Undead Legacy mod before server start
+      - DARKNESS_FALLS=NO            # Optional - Install Darkness Falls mod, if UNDEAD_LEGACY it's enable will not install anything
+      - DARKNESS_FALLS_UPDATE=NO     # Optional - Update Darkness Falls mod before server start
+      - DARKNESS_FALLS_URL=False     # Optional - Install the provided Darkness Falls url
+      - CPM=YES                       # Optional - CSMM Patron's Mod (CPM)
+      - CPM_UPDATE=NO                # Optional - Update CPM before server start
+      - BEPINEX=YES                   # Optional - BepInEx
+      - BEPINEX_UPDATE=NO            # Optional - Update BepInEx before server start
+      - BACKUP=NO                    # Optional - Backup server
+      - BACKUP_HOUR=5                # Optional - Backup hour 0-23
+      - BACKUP_MAX=7                 # Optional - Max backups to keep
+      - MONITOR=YES                   # Optional - Keeps server up if crash
+    volumes:
+      # Миры и сохранения игрока (самое важное)
+      - ~/7dtd_data/Saves:/home/sdtdserver/.local/share/7DaysToDie/
+
+      # Конфиги менеджера сервера (LGSM)
+      - ~/7dtd_data/LGSM-Config:/home/sdtdserver/lgsm/config-lgsm/sdtdserver
+
+      # Сами файлы игры (движок, данные, моды)
+      - ~/7dtd_data/ServerFiles:/home/sdtdserver/serverfiles/
+
+      # Логи сервера (пригодятся для чтения событий вашим ИИ)
+      - ~/7dtd_data/Logs:/home/sdtdserver/log/
+
+      # Папка для бэкапов
+      - ~/7dtd_data/Backups:/home/sdtdserver/lgsm/backup/
+    ports:
+      - 26900:26900/tcp # Default game ports
+      - 26900:26900/udp # Default game ports
+      - 26901:26901/udp # Default game ports
+      - 26902:26902/udp # Default game ports
+      - 8080:8080/tcp   # OPTIONAL - WEBADMIN
+      - 8082:8082/tcp   # OPTIONAL - WEBSERVER https://7dtd.illy.bz/wiki/Server%20fixes
+    ulimits:
+      nofile:
+        soft: "65535"
+        hard: "65535"
+
+    restart: unless-stopped # INFO - NEVER USE WITH START_MODE=4 or START_MODE=0
+    networks:
+      - ai_network
+
+networks:
+  ai_network:
+    driver: bridge
+
+volumes:
+  ollama_data:
+    external: true
+
+name: "7dtd"

@@ -62,11 +62,7 @@ readme = "README.md"
 python = "~3.13"
 ruff = "^0.14.14"
 pyright = "^1.1.408"
-aiogram-i18n = {extras = ["runtime"], version = "^1.5"}
-aiofiles = "^25.1.0"
-fluent-runtime = "^0.4.0"
 dotenv = "^0.9.9"
-aiohttp-socks = "^0.11.0"
 
 [build-system]
 requires = ["poetry-core"]
