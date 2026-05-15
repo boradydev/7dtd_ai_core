@@ -51,19 +51,19 @@ services:
       - MONITOR=YES                   # Optional - Keeps server up if crash
     volumes:
       # Миры и сохранения игрока (самое важное)
-      - ~/7dtd_data/Saves:/home/sdtdserver/.local/share/7DaysToDie/
+      - ~/7dtd_data/7DaysToDie:/home/sdtdserver/.local/share/7DaysToDie/
 
       # Конфиги менеджера сервера (LGSM)
-      - ~/7dtd_data/LGSM-Config:/home/sdtdserver/lgsm/config-lgsm/sdtdserver
+      - ~/7dtd_data/sdtdserver:/home/sdtdserver/lgsm/config-lgsm/sdtdserver
 
       # Сами файлы игры (движок, данные, моды)
-      - ~/7dtd_data/ServerFiles:/home/sdtdserver/serverfiles/
+      - ~/7dtd_data/serverfiles:/home/sdtdserver/serverfiles/
 
       # Логи сервера (пригодятся для чтения событий вашим ИИ)
-      - ~/7dtd_data/Logs:/home/sdtdserver/log/
+      - ~/7dtd_data/log:/home/sdtdserver/log/
 
       # Папка для бэкапов
-      - ~/7dtd_data/Backups:/home/sdtdserver/lgsm/backup/
+      - ~/7dtd_data/backup:/home/sdtdserver/lgsm/backup/
     ports:
       - 26900:26900/tcp # Default game ports
       - 26900:26900/udp # Default game ports
