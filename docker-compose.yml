@@ -70,6 +70,7 @@ services:
       - 26901:26901/udp # Default game ports
       - 26902:26902/udp # Default game ports
       - 8080:8080/tcp   # OPTIONAL - WEBADMIN
+      - 8081:8081/tcp   # OPTIONAL - TELNET
       - 8082:8082/tcp   # OPTIONAL - WEBSERVER https://7dtd.illy.bz/wiki/Server%20fixes
     ulimits:
       nofile:
