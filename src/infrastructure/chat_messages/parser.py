@@ -1,9 +1,9 @@
 import re
 
-from src.application.common.abcs import IChatMapper
+from src.presentation.log_dispatchers.abcs import IParser
 
 
-class GlobalChatParser(IChatMapper):
+class GlobalChatParser(IParser):
     CHAT_RE = re.compile(
         r"Chat \(from '(?P<raw_steam_id>.*?)', "
         r"entity id '(?P<entity_id>-?\d+)', "

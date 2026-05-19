@@ -20,10 +20,3 @@ class ILogger(Protocol):
     def critical(self, msg, *args, **kwargs) -> None: ...
 
     def exception(self, msg, *args, **kwargs) -> None: ...
-
-
-class IChatMapper(ABC):
-    @classmethod
-    def extract_fields(cls, line: str) -> dict[str, str] | None:
-        """Извлекает данные из строки."""
-        raise NotImplementedError
