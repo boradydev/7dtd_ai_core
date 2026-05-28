@@ -5,7 +5,7 @@ services:
     restart: unless-stopped
     environment:
       - OLLAMA_KEEP_ALIVE=-1
-    entrypoint: [ "/bin/sh", "-c", "/bin/ollama serve & sleep 5 && ollama run llama3 '' && wait" ]
+    entrypoint: [ "/bin/sh", "-c", "/bin/ollama serve & sleep 5 && ollama run llama3.1 '' && wait" ]
     ports:
       - "11434:11434"
     volumes:
@@ -33,7 +33,7 @@ services:
       - TEST_ALERT=NO                # Optional - Send a test alert
       - UPDATE_MODS=NO               # Optional - This will allow mods to be update on start, each mod also need to have XXXX_UPDATE=YES to update on start
       - MODS_URLS=""                 # Optional - Mods urls to install, must be ZIP or RAR.
-      - ALLOC_FIXES=YES               # Optional - Install ALLOC FIXES
+      - ALLOC_FIXES=NO               # Optional - Install ALLOC FIXES
       - ALLOC_FIXES_UPDATE=NO        # Optional - Update Allocs Fixes before server start
       - UNDEAD_LEGACY=NO             # Optional - Install Undead Legacy mod, if DARKNESS_FALLS it's enable will not install anything
       - UNDEAD_LEGACY_VERSION=stable # Optional - Undead Legacy version
@@ -41,7 +41,7 @@ services:
       - DARKNESS_FALLS=NO            # Optional - Install Darkness Falls mod, if UNDEAD_LEGACY it's enable will not install anything
       - DARKNESS_FALLS_UPDATE=NO     # Optional - Update Darkness Falls mod before server start
       - DARKNESS_FALLS_URL=False     # Optional - Install the provided Darkness Falls url
-      - CPM=YES                       # Optional - CSMM Patron's Mod (CPM)
+      - CPM=NO                       # Optional - CSMM Patron's Mod (CPM)
       - CPM_UPDATE=NO                # Optional - Update CPM before server start
       - BEPINEX=NO                   # Optional - BepInEx
       - BEPINEX_UPDATE=NO            # Optional - Update BepInEx before server start
