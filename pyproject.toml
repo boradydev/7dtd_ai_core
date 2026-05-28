@@ -51,7 +51,7 @@ skip-magic-trailing-comma = false
 docstring-code-format = true
 
 [tool.poetry]
-name = "log_bridge"
+name = "7dtd_ia_core"
 version = "0.1.0"
 description = "Real-time session monitoring and multi-IP"
 authors = ["boradydev"]
