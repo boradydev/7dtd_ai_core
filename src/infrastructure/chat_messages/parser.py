@@ -4,8 +4,11 @@ from src.presentation.log_dispatchers.abcs import IParser
 
 
 class GlobalChatParser(IParser):
+    """
+    Извлекает только сообщения игроков в глобальном чате.
+    """
     CHAT_RE = re.compile(
-        r"Chat \(from '(?P<raw_steam_id>.*?)', "
+        r"Chat \(from 'Steam_(?P<steam_id>.*?)', "
         r"entity id '(?P<entity_id>-?\d+)', "
         r"to '(?P<channel>.*?)'\): "
         r"(?P<raw_message>.*)"

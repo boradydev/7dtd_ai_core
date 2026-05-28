@@ -20,3 +20,9 @@ class ILogger(Protocol):
     def critical(self, msg, *args, **kwargs) -> None: ...
 
     def exception(self, msg, *args, **kwargs) -> None: ...
+
+
+class IGameAPI(ABC):
+    @abstractmethod
+    async def get_player_name(self, entity_id: str) -> str:
+        raise NotImplementedError
