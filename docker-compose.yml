@@ -81,6 +81,20 @@ services:
     networks:
       - ai_network
 
+  languagetool:
+    image: erikvl87/languagetool
+    container_name: languagetool
+    restart: unless-stopped
+    ports:
+      - "8010:8010"
+    environment:
+      # Ограничивает длину текста и кэш для стабильной работы
+      - langtool_caps_maxTextLength=5000
+      - langtool_caps_maxTextLengthPerMin=50000
+    networks:
+      - ai_network
+
+
 networks:
   ai_network:
     driver: bridge
