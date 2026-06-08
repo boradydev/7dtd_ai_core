@@ -32,9 +32,38 @@ class AIService[Behavior]:
         Запрос в ИИ.
 
         Args:
-            behavior: Поведение ИИ.
-            message: Сообщение клиента.
-            history: Изменяемый, в него добавляется история.
+            behavior:
+                Поведение ИИ, определяет системный промпт.
+
+                Пример:
+
+                    {
+                        "role": "system",
+                        "content": "Ты чат бот в игре 7dtd"
+                    }
+
+            message:
+                Сообщение клиента.
+
+            history:
+                История сообщений.
+
+                Важно:
+                    Не должна содержать роль ``system``.
+                    Главный системный промпт автоматически добавляется
+                    кодом в начало списка.
+
+                Формат:
+
+                    [
+                        {"role": "user", "content": "Поза-предыдущий промпт"},
+
+                        {"role": "assistant", "content": "Поза-предыдущий ответ"},
+
+                        {"role": "user", "content": "Предыдущий промпт"},
+
+                        {"role": "assistant", "content": "Предыдущий ответ"}
+                    ]
         """
         messages = [{"role": "system", "content": self._instructions.get(behavior)}]
         messages.extend(history)
