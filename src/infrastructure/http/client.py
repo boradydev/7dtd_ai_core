@@ -1,21 +1,24 @@
-from types import TracebackType
+from typing import Any
 
 import aiohttp
 
+from src.application.common.abcs import IHTTPClient
 
-class HTTPClient:
+
+class HTTPClient(IHTTPClient):
     def __init__(
         self,
         base_url: str,
-        headers: dict[str, str],
+        headers: dict[str, str] | None = None,
         limit: int = 5,
     ) -> None:
         self._base_url = base_url
-        self._headers = headers
+        self._headers = headers or {}
         self._limit = limit
         self._session: aiohttp.ClientSession | None = None
 
-    async def __aenter__(self) -> aiohttp.ClientSession:
+    def _get_session(self) -> aiohttp.ClientSession:
+        """Ленивая инициализация сессии при первом запросе."""
         if self._session is None or self._session.closed:
             self._session = aiohttp.ClientSession(
                 base_url=self._base_url,
@@ -24,14 +27,17 @@ class HTTPClient:
             )
         return self._session
 
-    async def __aexit__(
+    async def post(
         self,
-        exc_type: type[BaseException] | None,
-        exc_val: BaseException | None,
-        exc_tb: TracebackType | None,
-    ) -> None:
-        pass
+        url: str,
+        data: dict[str, Any],
+    ) -> Any:
+        session = self._get_session()
+        async with session.post(url, json=data) as response:
+            response.raise_for_status()
+            return await response.json()
 
     async def close(self) -> None:
+        """Вызывается ОДИН раз при остановке всего приложения."""
         if self._session and not self._session.closed:
             await self._session.close()
