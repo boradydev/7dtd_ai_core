@@ -6,7 +6,7 @@ from ollama import AsyncClient
 from src.application.common.ai.abcs import IModelConfig, ISystemInstructions
 
 
-class AIService[Behavior]:
+class OllamaApi[Behavior]:
     _ATTEMPT_MSG = "attempt: {attempt}"
 
     def __init__(
