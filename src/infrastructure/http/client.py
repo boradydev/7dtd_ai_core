@@ -27,13 +27,23 @@ class HTTPClient(IHTTPClient):
             )
         return self._session
 
-    async def post(
+    async def post_json(
         self,
         url: str,
         data: dict[str, Any],
     ) -> Any:
         session = self._get_session()
         async with session.post(url, json=data) as response:
+            response.raise_for_status()
+            return await response.json()
+
+    async def post_form(
+        self,
+        url: str,
+        data: dict[str, Any],
+    ) -> Any:
+        session = self._get_session()
+        async with session.post(url, data=data) as response:
             response.raise_for_status()
             return await response.json()
 

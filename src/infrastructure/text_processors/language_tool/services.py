@@ -1,4 +1,3 @@
-import re
 from operator import itemgetter
 from typing import Any
 
@@ -22,9 +21,6 @@ class CustomDictionary(ICustomDictionary):
 
 
 class LanguageToolProcessor(ITextProcessor):
-    _HTML_TAG_PATTERN = re.compile(r"<[^>]*>")
-    _MULTIPLE_SPACES_PATTERN = re.compile(r"\s+")
-
     def __init__(
         self,
         http_client: IHTTPClient,
@@ -52,7 +48,7 @@ class LanguageToolProcessor(ITextProcessor):
             "text": text,
             "language": self._language,
         }
-        response_json = await self._http_client.post("/v2/check", data=data)
+        response_json = await self._http_client.post_form("/v2/check", data=data)
         if not isinstance(response_json, dict):
             return None
         return self._apply_corrections(text=text, data=response_json)

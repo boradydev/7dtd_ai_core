@@ -20,7 +20,7 @@ class GameAPI(IGameAPI):
 
     async def send_message(self, text: str) -> None:
         """Отправляет сообщение от имени сервера в глобальный чат."""
-        await self._http_client.post(
+        await self._http_client.post_json(
             url=self._command_url,
             data={
                 "command": f'say "{text}"',
