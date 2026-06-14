@@ -1,18 +1,12 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
+from os import environ
 
-from src.core.environ import environ, environ_get
 
-
-@dataclass(frozen=True, slots=True)
+@dataclass(frozen=True, slots=True, kw_only=True)
 class AppSettings:
-    DEBUG_MODE: str | None = environ_get(str, "DEBUG_MODE")
-    LOG_PATH: str = environ(str, "LOG_PATH")
-    GAME_API_URL: str = environ(str, "GAME_API_URL")
-    AI_API_URL: str = environ(str, "AI_API_URL")
-
-    @property
-    def debug(self) -> bool:
-        if self.DEBUG_MODE is None:
-            return False
-
-        return self.DEBUG_MODE.lower() == "true"
+    DEBUG_MODE: bool = field(
+        default_factory=lambda: environ.get("DEBUG_MODE", "").lower() == "true"
+    )
+    LOG_FOLDER_PATH: str = field(default_factory=lambda: environ["LOG_FOLDER_PATH"])
+    GAME_API_URL: str = field(default_factory=lambda: environ["GAME_API_URL"])
+    AI_API_URL: str = field(default_factory=lambda: environ["AI_API_URL"])
