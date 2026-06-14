@@ -1,5 +1,10 @@
 import sys
 from io import TextIOWrapper
+from unittest.mock import MagicMock
+
+import pytest
+
+from src.application.common.abcs import ILogger
 
 
 def pytest_configure():
@@ -15,3 +20,8 @@ def pytest_configure():
             encoding="utf-8",
             errors="replace",
         )
+
+
+@pytest.fixture
+def mock_logger() -> MagicMock | ILogger:
+    return MagicMock(spec_set=ILogger)
