@@ -1,25 +1,22 @@
 import asyncio
 import logging
-from collections.abc import Callable, Coroutine
 from logging import Logger
-from typing import Any
 
 from src.presentation.log_dispatchers.abcs import IDispatcher, ILogFile, IRoute
 
 
 class Dispatcher(IDispatcher):
-    _NO_ROUTE_MSG = "No route found for line {line!r} in file://{file_path}"
-    _START_MSG = "The dispatcher is started. file://{file_path}"
+    _NO_ROUTE_MSG = "No route found for line {line!r} in file://{log_dir}"
+    _START_MSG = "The dispatcher is started. file://{log_dir}"
 
     def __init__(
         self,
         log_file: ILogFile,
-        create_task: Callable[[Coroutine[Any, Any, Any]], Any] | None = None,
         logger: Logger | None = None,
         log_unhandled: bool = False,
     ) -> None:
         self._log_file = log_file
-        self._create_task = create_task or asyncio.create_task
+        self._create_task = asyncio.create_task
         self._logger = logger or logging.getLogger(__name__)
         self._routes: list[IRoute] = []
         self._log_unhandled = log_unhandled
@@ -28,7 +25,7 @@ class Dispatcher(IDispatcher):
         self._routes.append(route)
 
     async def run(self) -> None:
-        self._logger.info(self._START_MSG.format(file_path=self._log_file.file_path))
+        self._logger.info(self._START_MSG.format(log_dir=self._log_file.log_dir))
         async for raw_line in self._log_file.get_line():
             line = raw_line.strip()
             if not line:
@@ -45,6 +42,6 @@ class Dispatcher(IDispatcher):
                 self._logger.warning(
                     self._NO_ROUTE_MSG.format(
                         line=line,
-                        file_path=self._log_file.file_path,
+                        log_dir=self._log_file.log_dir,
                     )
                 )

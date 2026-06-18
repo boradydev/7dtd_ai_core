@@ -5,7 +5,7 @@
 * [x] LanguageTool и словарь исключений
 * [x] Настроить Docker-конфигурацию
 * [x] [LogFile](src/infrastructure/filesystem/log_reader/log_file.py) с ротацией
-* [ ] Диспетчер логов
+* [x] Диспетчер логов
 * [ ] Маршруты для вызова use cases
 * [ ] PostgreSQL
-* [ ] Первый запуск ИИ чатом в игре
+* [ ] Первый запуск ИИ с чатом в игре
