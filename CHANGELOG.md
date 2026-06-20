@@ -6,6 +6,6 @@
 * [x] Настроить Docker-конфигурацию
 * [x] [LogFile](src/infrastructure/filesystem/log_reader/log_file.py) с ротацией
 * [x] Диспетчер логов
-* [ ] Маршруты для вызова use cases
+* [x] Маршруты для вызова use cases
 * [ ] PostgreSQL
 * [ ] Первый запуск ИИ с чатом в игре
