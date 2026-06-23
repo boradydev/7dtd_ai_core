@@ -12,7 +12,7 @@ class GlobalChatDTO(IBaseDTO):
     raw_message: str
     timestamp: datetime = field(default_factory=datetime.now, init=False)
 
-    def get_clean_message(self, player_name: str | None = None) -> str:
+    def strip_player_prefix(self, player_name: str | None = None) -> str:
         """Удаляет префикс перед сообщением"""
         if player_name:
             return self.raw_message.removeprefix(f"{player_name}: ")
