@@ -9,10 +9,7 @@ CREATE TABLE ai.players
 
 CREATE TABLE ai.chat_histories
 (
-    player_id    TEXT PRIMARY KEY,
-    chat_history JSONB NOT NULL,
-
-    CONSTRAINT fk_chat_histories_players
-        FOREIGN KEY (player_id)
-            REFERENCES ai.players (player_id)
+    player_id  TEXT PRIMARY KEY,
+    history    JSONB       NOT NULL,
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
