@@ -10,7 +10,7 @@ class ILogFile(ABC):
 
     @property
     @abstractmethod
-    def file_path(self) -> str:
+    def log_dir(self) -> str:
         raise NotImplementedError
 
 
