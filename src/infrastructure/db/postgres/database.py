@@ -17,12 +17,12 @@ class Postgres:
 
     Attributes:
         _engine: Экземпляр асинхронного движка SQLAlchemy.
-        session_factory : Фабрика для генерации
+        _session_factory : Фабрика для генерации
             новых асинхронных сессий.
     """
 
     _engine: AsyncEngine
-    session_factory: async_sessionmaker[AsyncSession]
+    _session_factory: async_sessionmaker[AsyncSession]
 
     def __init__(
         self,
@@ -43,10 +43,14 @@ class Postgres:
         actual_engine_factory = engine_factory or create_async_engine
         self._engine = actual_engine_factory(db_url)
         actual_session_class = session_factory_class or async_sessionmaker
-        self.session_factory = actual_session_class(
+        self._session_factory = actual_session_class(
             bind=self._engine,
             expire_on_commit=False,
         )
+
+    @property
+    def session_factory(self) -> async_sessionmaker[AsyncSession]:
+        return self._session_factory
 
     async def dispose(self) -> None:
         """
