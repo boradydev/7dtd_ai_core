@@ -1,5 +1,8 @@
 from abc import ABC, abstractmethod
 
+from src.domain.chat_histories.entity import ChatHistory
+from src.domain.players.vals import PlayerId
+
 
 class ITextProcessor(ABC):
     """
@@ -50,15 +53,17 @@ class IChatHistoriesRepository(ABC):
     @abstractmethod
     async def save(
         self,
-        player_id: str,
-        history: list[dict[str, str]],
+        dto: ChatHistory,
     ) -> None:
         """Создает или сохраняет историю чата."""
         raise NotImplementedError
 
     @abstractmethod
-    async def find_by_player_id(self, player_id: str) -> list[dict[str, str]] | None:
-        """Поиск истории чата, история может еще существовать."""
+    async def find_by_player_id(
+        self,
+        player_id: PlayerId,
+    ) -> ChatHistory | None:
+        """Поиск истории чата, история может еще не существовать."""
         raise NotImplementedError
 
 
