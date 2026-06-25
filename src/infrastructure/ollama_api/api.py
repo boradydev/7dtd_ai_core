@@ -1,12 +1,13 @@
 import logging
-from collections.abc import AsyncIterator
+from collections.abc import AsyncGenerator
 
 from ollama import AsyncClient
 
+from src.application.chat_messages.abcs import IAIClient
 from src.application.common.ai.abcs import IModelConfig, ISystemInstructions
 
 
-class OllamaApi[Behavior]:
+class OllamaApi[Behavior](IAIClient[Behavior]):
     _ATTEMPT_MSG = "attempt: {attempt}"
 
     def __init__(
@@ -22,12 +23,12 @@ class OllamaApi[Behavior]:
         self._model_name = model_name
         self._logger = logging.getLogger(__name__)
 
-    async def process_prompt(
+    async def chat(
         self,
         behavior: Behavior,
         message: str,
-        history: list[dict[str, str]],
-    ) -> AsyncIterator[str]:
+        history: list[dict[str, str]] | None = None,
+    ) -> AsyncGenerator[str]:
         """
         Запрос в ИИ.
 
@@ -66,7 +67,8 @@ class OllamaApi[Behavior]:
                     ]
         """
         messages = [{"role": "system", "content": self._instructions.get(behavior)}]
-        messages.extend(history)
+        if history:
+            messages.extend(history)
         messages.append({"role": "user", "content": message})
 
         attempt = 0

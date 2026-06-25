@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from collections.abc import AsyncGenerator
 
 from src.domain.chat_histories.entity import ChatHistory
 from src.domain.players.vals import PlayerId
@@ -35,16 +36,16 @@ class IGlobalChat(ABC):
         raise NotImplementedError
 
 
-class IAIClient[DTO](ABC):
+class IAIClient[Behavior](ABC):
     """Интерфейс для взаимодействия с API нейросетей."""
 
     @abstractmethod
-    async def chat(
+    def chat(
         self,
-        prompt: str,
-        sanitize: bool = True,
-        normalize: bool = True,
-    ) -> DTO:
+        behavior: Behavior,
+        message: str,
+        history: list[dict[str, str]] | None = None,
+    ) -> AsyncGenerator[str, None]:
         """Отправляет запрос в нейросеть и возвращает ответ."""
         raise NotImplementedError
 

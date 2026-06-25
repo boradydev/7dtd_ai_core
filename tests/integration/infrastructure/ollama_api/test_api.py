@@ -14,7 +14,7 @@ async def test_assistant_mechanics(ai_service):
     print(f"\n[{AIBehavior.ASSISTANT}]: ", end="", flush=True)
 
     chunks = []
-    async for chunk in ai_service.process_prompt(
+    async for chunk in ai_service.chat(
         behavior=AIBehavior.ASSISTANT,
         message=message,
         history=history,
