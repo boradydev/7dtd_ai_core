@@ -1,4 +1,3 @@
-from collections.abc import Sequence
 from dataclasses import dataclass
 from typing import ClassVar, Final, Self
 
@@ -19,7 +18,7 @@ class ChatHistory(BaseEntity):
         return self._player_id
 
     @property
-    def history(self) -> Sequence[dict[str, str]]:
+    def history(self) -> list[dict[str, str]]:
         return self._history
 
     @classmethod
