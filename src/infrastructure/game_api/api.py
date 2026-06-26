@@ -44,5 +44,5 @@ class GameAPI(IGameAPI):
         """Накладывает дебаф на игрока."""
         raise NotImplementedError
 
-    async def get_player_name(self, entity_id: str) -> str:
+    async def get_player_name(self, steam_id: str) -> str:
         raise NotImplementedError

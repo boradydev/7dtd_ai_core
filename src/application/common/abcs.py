@@ -57,7 +57,7 @@ class IHTTPClient(ABC):
 
 class IGameAPI(ABC):
     @abstractmethod
-    async def get_player_name(self, entity_id: str) -> str:
+    async def get_player_name(self, steam_id: str) -> str:
         raise NotImplementedError
 
     @abstractmethod

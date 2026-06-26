@@ -54,16 +54,19 @@ class AssistantMessage:
     )
 
     def __post_init__(self) -> None:
+        self.check_message_length(len(self.value))
         cleaned_content = self._CLEAN_PATTERN.sub("", self.value).strip()
 
         if not cleaned_content:
             raise excs.EmptyMessageException
-
-        if len(cleaned_content) > self._MAX_LENGTH:
-            raise excs.MessageTooLongException
 
         object.__setattr__(
             self,
             "value",
             cleaned_content,
         )
+
+    @classmethod
+    def check_message_length(cls, message_len: int) -> None:
+        if message_len > cls._MAX_LENGTH:
+            raise excs.MessageTooLongException

@@ -1,6 +1,4 @@
-import logging
-
-from src.application.chat_messages.abcs import IAIClient, IGlobalChat
+from src.application.chat_messages.abcs import IAIClient, IMessageBuilder
 from src.application.chat_messages.dtos import GlobalChatDTO
 from src.application.common.abcs import ICase, IGameAPI
 from src.application.common.ai.behavior import AIBehavior
@@ -16,14 +14,12 @@ class ChatMessageCase(ICase[GlobalChatDTO]):
         uow: ChatHistoriesUOW,
         game_api: IGameAPI,
         ai_client: IAIClient[AIBehavior],
-        global_chat: IGlobalChat,
-        logger: logging.Logger | None = None,
+        message_builder: IMessageBuilder,
     ) -> None:
         self._uow = uow
         self._game_api = game_api
         self._ai_client = ai_client
-        self._global_chat = global_chat
-        self._logger = logger or logging.getLogger(__name__)
+        self._message_builder = message_builder
 
     async def execute(self, dto: GlobalChatDTO) -> None:
         player_id = PlayerId(dto.steam_id)
@@ -31,9 +27,13 @@ class ChatMessageCase(ICase[GlobalChatDTO]):
             chat_history = await uow.histories.find_by_player_id(player_id)
 
         if chat_history is None:
-            chat_history = ChatHistory.create(player_id=player_id)
+            chat_history = ChatHistory.create(
+                player_id=player_id,
+            )
 
-        player_name = await self._game_api.get_player_name(entity_id=dto.entity_id)
+        player_name = await self._game_api.get_player_name(
+            steam_id=dto.steam_id,
+        )
         user_message = UserMessage(dto.strip_player_prefix(player_name=player_name))
 
         tokens: list[str] = []
@@ -43,13 +43,19 @@ class ChatMessageCase(ICase[GlobalChatDTO]):
             behavior=AIBehavior.ASSISTANT,
         ):
             tokens.append(token)
+            if current_message := self._message_builder.push(token=token):
+                await self._game_api.send_message(
+                    text=current_message.value,
+                )
 
-        assistant_message = AssistantMessage("".join(tokens))
-        await self._global_chat.send(assistant_message.value)
+        if current_message := self._message_builder.flush():
+            await self._game_api.send_message(
+                text=current_message.value,
+            )
 
         chat_history.append_turn(
             user_message=user_message,
-            assistant_message=assistant_message,
+            assistant_message=AssistantMessage("".join(tokens)),
         )
 
         async with self._uow as uow:
