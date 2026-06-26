@@ -22,7 +22,6 @@ class ChatHistoriesUOW(IPostgresUOW, IChatHistoriesUOW):
     def __init__(
         self,
         session_factory: async_sessionmaker[AsyncSession],
-        chat_histories_class: type[ChatHistoriesRepository],
     ) -> None:
         """
         Инициализирует Unit of Work.
@@ -31,7 +30,6 @@ class ChatHistoriesUOW(IPostgresUOW, IChatHistoriesUOW):
             и конкретной реализации БД через SQLAlchemy.
         """
         self._session_factory = session_factory
-        self._chat_histories_class = chat_histories_class
 
     async def __aenter__(self) -> Self:
         """Инициализирует сессию и подготавливает репозитории к работе."""
