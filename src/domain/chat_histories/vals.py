@@ -67,3 +67,8 @@ class AssistantMessage:
             "value",
             cleaned_content,
         )
+
+    @classmethod
+    def check_message_length(cls, message_len: int) -> None:
+        if message_len > cls._MAX_LENGTH:
+            raise excs.MessageTooLongException

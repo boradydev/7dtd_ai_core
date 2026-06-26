@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from collections.abc import AsyncGenerator
+from collections.abc import AsyncGenerator, Iterable
 
 from src.domain.chat_histories.entity import ChatHistory
 from src.domain.players.vals import PlayerId
@@ -30,9 +30,26 @@ class ITextProcessor(ABC):
         raise NotImplementedError
 
 
-class IGlobalChat(ABC):
+class IMessageBuilder(ABC):
     @abstractmethod
-    async def send(self, text: str) -> None:
+    def push(self, token: str) -> str | None:
+        """
+        Принимает очередной токен модели.
+
+        Возвращает все сообщения, которые можно отправить
+        прямо сейчас.
+        """
+
+    @abstractmethod
+    def flush(self) -> str | None:
+        """Возвращает остаток после окончания генерации."""
+
+
+class IMessageFormatter(ABC):
+    """Форматирует текст под платформу, цвета и прочее."""
+
+    @abstractmethod
+    def format(self, message: str) -> str:
         raise NotImplementedError
 
 
@@ -45,7 +62,7 @@ class IAIClient[Behavior](ABC):
         behavior: Behavior,
         message: str,
         history: list[dict[str, str]] | None = None,
-    ) -> AsyncGenerator[str, None]:
+    ) -> AsyncGenerator[str]:
         """Отправляет запрос в нейросеть и возвращает ответ."""
         raise NotImplementedError
 
