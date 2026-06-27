@@ -60,3 +60,4 @@ class ChatMessageCase(ICase[GlobalChatDTO]):
 
         async with self._uow as uow:
             await uow.histories.save(chat_history)
+            await uow.commit()
