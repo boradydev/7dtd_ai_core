@@ -1,7 +1,7 @@
 from src.application.chat_messages.cases import ChatMessageCase
+from src.application.common.abcs import IGameAPI
 from src.infrastructure.db.postgres.database import Postgres
 from src.infrastructure.db.postgres.uow.uow import ChatHistoriesUOW
-from src.infrastructure.game_api.api import GameAPI
 from src.infrastructure.ollama_api.api import OllamaApi
 from src.infrastructure.ollama_api.config import AIModelConfig
 from src.infrastructure.ollama_api.instructions import SystemInstruction
@@ -11,7 +11,7 @@ from src.settings import AppSettings
 def create_chat_message_case(
     app_settings: AppSettings,
     postgres: Postgres,
-    game_api: GameAPI,
+    game_api: IGameAPI,
 ) -> ChatMessageCase:
     uow = ChatHistoriesUOW(
         session_factory=postgres.session_factory,
