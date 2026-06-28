@@ -9,7 +9,9 @@ from src.settings import AppSettings
 
 
 def create_chat_message_case(
-    app_settings: AppSettings, postgres: Postgres, game_api: GameAPI
+    app_settings: AppSettings,
+    postgres: Postgres,
+    game_api: GameAPI,
 ) -> ChatMessageCase:
     uow = ChatHistoriesUOW(
         session_factory=postgres.session_factory,
