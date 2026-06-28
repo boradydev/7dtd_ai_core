@@ -1,3 +1,6 @@
+from unittest.mock import AsyncMock
+
+from src.application.common.abcs import ICase
 from src.infrastructure.routes.common import Route
 from tests.unit.infrastructure.routes.conftest import FakeDTO
 
@@ -13,9 +16,16 @@ async def test_common_route(
         parser=mock_parser_type,
         logger=mock_logger,
     )
-    route.add_case(mock_first_case)
-    route.add_case(mock_second_case)
-    assert len(route._cases) == 2
+
+    def first_case_factory() -> AsyncMock | ICase[FakeDTO]:
+        return mock_first_case
+
+    def second_case_factory() -> AsyncMock | ICase[FakeDTO]:
+        return mock_second_case
+
+    route.add_case_factory(first_case_factory)
+    route.add_case_factory(second_case_factory)
+    assert len(route._case_factories) == 2
 
     fields = {
         "value1": "value1",

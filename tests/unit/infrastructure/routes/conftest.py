@@ -5,7 +5,7 @@ import pytest
 
 from src.application.common.abcs import ICase
 from src.application.common.dtos import IBaseDTO
-from src.presentation.log_dispatchers.abcs import IParser
+from src.presentation.log_dispatchers.game.abcs import IParser
 
 
 @dataclass(frozen=True, slots=True, kw_only=True)
