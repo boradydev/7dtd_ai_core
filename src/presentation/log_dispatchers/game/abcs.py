@@ -13,6 +13,10 @@ class ILogFile(ABC):
     def log_dir(self) -> str:
         raise NotImplementedError
 
+    @abstractmethod
+    async def close(self) -> None:
+        raise NotImplementedError
+
 
 class IRoute(ABC):
     @abstractmethod

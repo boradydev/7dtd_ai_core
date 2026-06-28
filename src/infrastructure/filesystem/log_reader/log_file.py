@@ -23,6 +23,7 @@ class LogFile(ILogFile):
         "total_skipped_size={total_skipped_size}"
     )
     _NEW_FILE_MSG = "Find new log file://{file_path}"
+    _NO_NEW_FILE_MSG = "Log file not found in directory file://{log_dir}"
     _EMPTY_LINES = {"\n", "\r", "\r\n", "\n\r", ""}
 
     def __init__(
@@ -59,16 +60,20 @@ class LogFile(ILogFile):
         return self._log_dir
 
     async def close(self) -> None:
-        """Останавливает цикл чтения файла"""
+        """Останавливает цикл чтения файла."""
         self._running = False
 
     async def _find_latest_log_file(self) -> str | None:
-        return await asyncio.to_thread(
+        file_path = await asyncio.to_thread(
             lambda: log_finder(
                 log_dir=self.log_dir,
                 find_pattern=self._find_pattern,
             )
         )
+        if file_path is None:
+            self._logger.warning(self._NO_NEW_FILE_MSG.format(log_dir=self.log_dir))
+
+        return file_path
 
     async def _skip_oversized_line(
         self,
@@ -104,8 +109,10 @@ class LogFile(ILogFile):
                     await asyncio.sleep(self._rotation_check_interval)
                     continue
 
+                self._logger.info(self._NEW_FILE_MSG.format(file_path=file_path))
+
             try:
-                async with aiofiles.open(file_path) as file:
+                async with aiofiles.open(file_path, encoding="utf-8") as file:
                     await file.seek(0, os.SEEK_END)
 
                     while self._running and not rotate_file:
@@ -115,6 +122,8 @@ class LogFile(ILogFile):
                             await asyncio.sleep(self._poll_interval)
                             if empty_reads > max_empty_reads:
                                 new_file_path = await self._find_latest_log_file()
+                                empty_reads = 0
+
                                 if new_file_path and new_file_path != file_path:
                                     file_path = new_file_path
                                     rotate_file = True
