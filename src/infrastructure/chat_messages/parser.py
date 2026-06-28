@@ -1,6 +1,6 @@
 import re
 
-from src.presentation.log_dispatchers.abcs import IParser
+from src.presentation.log_dispatchers.game.abcs import IParser
 
 
 class GlobalChatParser(IParser):

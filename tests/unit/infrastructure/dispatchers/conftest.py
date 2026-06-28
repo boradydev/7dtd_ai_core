@@ -2,7 +2,7 @@ from unittest.mock import AsyncMock, MagicMock
 
 import pytest
 
-from src.presentation.log_dispatchers.abcs import ILogFile, IRoute
+from src.presentation.log_dispatchers.game.abcs import ILogFile, IRoute
 
 
 @pytest.fixture

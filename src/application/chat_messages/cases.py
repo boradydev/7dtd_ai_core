@@ -1,5 +1,6 @@
 from src.application.chat_messages.abcs import IAIClient, IMessageBuilder
 from src.application.chat_messages.dtos import GlobalChatDTO
+from src.application.chat_messages.services import MessageBuilder
 from src.application.common.abcs import ICase, IGameAPI
 from src.application.common.ai.behavior import AIBehavior
 from src.domain.chat_histories.entity import ChatHistory
@@ -14,12 +15,11 @@ class ChatMessageCase(ICase[GlobalChatDTO]):
         uow: ChatHistoriesUOW,
         game_api: IGameAPI,
         ai_client: IAIClient[AIBehavior],
-        message_builder: IMessageBuilder,
     ) -> None:
         self._uow = uow
         self._game_api = game_api
         self._ai_client = ai_client
-        self._message_builder = message_builder
+        self._message_builder = MessageBuilder()
 
     async def execute(self, dto: GlobalChatDTO) -> None:
         player_id = PlayerId(dto.steam_id)

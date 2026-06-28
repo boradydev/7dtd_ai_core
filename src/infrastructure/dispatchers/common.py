@@ -2,7 +2,7 @@ import asyncio
 import logging
 from logging import Logger
 
-from src.presentation.log_dispatchers.abcs import IDispatcher, ILogFile, IRoute
+from src.presentation.log_dispatchers.game.abcs import IDispatcher, ILogFile, IRoute
 
 
 class Dispatcher(IDispatcher):

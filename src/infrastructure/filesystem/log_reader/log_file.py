@@ -6,7 +6,7 @@ from collections.abc import AsyncIterator
 import aiofiles
 
 from src.infrastructure.filesystem.log_reader.log_finder import log_finder
-from src.presentation.log_dispatchers.abcs import ILogFile
+from src.presentation.log_dispatchers.game.abcs import ILogFile
 
 
 class LogFile(ILogFile):
@@ -59,6 +59,7 @@ class LogFile(ILogFile):
         return self._log_dir
 
     async def close(self) -> None:
+        """Останавливает цикл чтения файла"""
         self._running = False
 
     async def _find_latest_log_file(self) -> str | None:
