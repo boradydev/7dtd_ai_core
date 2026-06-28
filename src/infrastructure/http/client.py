@@ -48,6 +48,6 @@ class HTTPClient(IHTTPClient):
             return await response.json()
 
     async def close(self) -> None:
-        """Вызывается ОДИН раз при остановке всего приложения."""
+        """Закрывает все открытые HTTP соединения."""
         if self._session and not self._session.closed:
             await self._session.close()

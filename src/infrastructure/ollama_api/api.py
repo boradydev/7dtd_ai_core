@@ -17,6 +17,15 @@ class OllamaApi[Behavior](IAIClient[Behavior]):
         options: type[IModelConfig[Behavior]],
         model_name: str = "llama3.1",
     ) -> None:
+        """
+        Инициализирует клиент OllamaApi.
+
+        Args:
+            host: URL-адрес хоста, на котором запущен сервис Ollama.
+            instructions: Класс ``system`` промптов для настройки поведения модели.
+            options: Класс конфигурации параметров генерации модели.
+            model_name: Название используемой языковой модели. По умолчанию "llama3.1".
+        """
         self._client = AsyncClient(host=host)
         self._instructions = instructions
         self._options = options

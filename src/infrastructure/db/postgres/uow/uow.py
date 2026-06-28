@@ -13,7 +13,6 @@ from src.infrastructure.db.postgres.uow.common import IPostgresUOW
 
 
 class ChatHistoriesUOW(IPostgresUOW, IChatHistoriesUOW):
-    """Реализация Unit of Work для управления транзакциями сущностей игроки."""
 
     @property
     def histories(self) -> IChatHistoriesRepository:
@@ -24,10 +23,10 @@ class ChatHistoriesUOW(IPostgresUOW, IChatHistoriesUOW):
         session_factory: async_sessionmaker[AsyncSession],
     ) -> None:
         """
-        Инициализирует Unit of Work.
+        Реализация Unit of Work для управления транзакциями.
 
-        Этот класс является точкой сопряжения абстрактного интерфейса IPlayerUOW
-            и конкретной реализации БД через SQLAlchemy.
+        Включает:
+            ``ChatHistoriesRepository``
         """
         self._session_factory = session_factory
 

@@ -3,6 +3,13 @@ from src.domain.chat_histories.vals import AssistantMessage
 
 
 class MessageBuilder(IMessageBuilder):
+    """
+    Сборщик сообщений ассистента из отдельных токенов.
+
+    Буферизирует входящие токены и собирает их в готовые сообщения
+    при обнаружении конца предложения или при принудительном сбросе.
+    """
+
     def __init__(self) -> None:
         self._current_buffer: list[str] = []
         self._sentence_enders = {".", "!", "?"}

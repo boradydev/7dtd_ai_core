@@ -53,10 +53,5 @@ class Postgres:
         return self._session_factory
 
     async def dispose(self) -> None:
-        """
-        Закрывает все активные соединения в пуле движка.
-
-        Должен вызываться при завершении работы приложения (например, в lifespan),
-        чтобы избежать утечек соединений и ошибок "too many connections".
-        """
+        """Закрывает все активные соединения в пуле движка."""
         await self._engine.dispose()
