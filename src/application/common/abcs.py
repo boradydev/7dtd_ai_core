@@ -3,6 +3,12 @@ from typing import Any, Protocol
 
 
 class ICase[DTO](ABC):
+    """
+    Базовый контракт для событийно-ориентированных (Event-Driven) сценариев.
+
+    Компонент выступает в роли конечного оркестратора данных и не возвращает результат.
+    """
+
     @abstractmethod
     async def execute(self, dto: DTO) -> None:
         raise NotImplementedError
