@@ -1,0 +1,24 @@
+<game>
+
+    <player id="1">
+
+        <inventory>
+
+            <item name="Sword">
+
+                <modifier type="fire" value="10"/>
+                <modifier type="speed" value="2"/>
+
+            </item>
+
+            <item name="Bow">
+
+                <modifier type="ice" value="5"/>
+
+            </item>
+
+        </inventory>
+
+    </player>
+
+</game>

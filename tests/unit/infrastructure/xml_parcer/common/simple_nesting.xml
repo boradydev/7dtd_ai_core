@@ -1,0 +1,10 @@
+<library>
+    <book id="1" title="Python">
+        <author name="Alex"/>
+        <author name="Ivan"/>
+    </book>
+
+    <book id="2" title="FastAPI">
+        <author name="John"/>
+    </book>
+</library>
