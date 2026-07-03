@@ -4,8 +4,10 @@ from typing import Self
 
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker
 
+from src.domain.common.abcs import InterfaceUOW
 
-class IPostgresUOW(ABC):
+
+class IPostgresUOW(InterfaceUOW, ABC):
     """
     Абстрактная заготовка для Unit of Work на базе PostgreSQL.
 

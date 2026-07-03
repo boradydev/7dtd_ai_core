@@ -3,6 +3,7 @@ from collections.abc import AsyncGenerator
 
 from src.domain.chat_histories.entity import ChatHistory
 from src.domain.chat_histories.vals import AssistantMessage
+from src.domain.common.abcs import InterfaceUOW
 from src.domain.players.vals import PlayerId
 
 
@@ -86,7 +87,7 @@ class IChatHistoriesRepository(ABC):
         raise NotImplementedError
 
 
-class IChatHistoriesUOW(ABC):
+class IChatHistoriesUOW(InterfaceUOW, ABC):
     @property
     @abstractmethod
     def histories(self) -> IChatHistoriesRepository:

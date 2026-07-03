@@ -13,7 +13,6 @@ from src.infrastructure.db.postgres.uow.common import IPostgresUOW
 
 
 class ChatHistoriesUOW(IPostgresUOW, IChatHistoriesUOW):
-
     @property
     def histories(self) -> IChatHistoriesRepository:
         return self._histories

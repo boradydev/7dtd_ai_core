@@ -1,7 +1,7 @@
 import logging
 import time
 
-from src.application.chat_messages.abcs import IAIClient
+from src.application.chat_messages.abcs import IAIClient, IChatHistoriesUOW
 from src.application.chat_messages.dtos import GlobalChatDTO
 from src.application.chat_messages.services import MessageBuilder
 from src.application.common.abcs import ICase, IGameAPI
@@ -9,13 +9,12 @@ from src.application.common.ai.behavior import AIBehavior
 from src.domain.chat_histories.entity import ChatHistory
 from src.domain.chat_histories.vals import AssistantMessage, UserMessage
 from src.domain.players.vals import PlayerId
-from src.infrastructure.db.postgres.uow.uow import ChatHistoriesUOW
 
 
 class ChatMessageCase(ICase[GlobalChatDTO]):
     def __init__(
         self,
-        uow: ChatHistoriesUOW,
+        uow: IChatHistoriesUOW,
         game_api: IGameAPI,
         ai_client: IAIClient[AIBehavior],
     ) -> None:
