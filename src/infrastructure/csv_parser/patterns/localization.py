@@ -1,7 +1,12 @@
 PATTERN = (
-    ("Key", "name"),
+    ("Key", "key"),
+    ("File", "file"),
     ("Type", "type"),
+    ("UsedInMainMenu", "used_in_main_menu"),
+    ("NoTranslate", "no_translate"),
+    ("KeepLoaded", "keep_loaded"),
     ("english", "english"),
+    ("Context / Alternate Text", "context"),
     ("german", "german"),
     ("spanish", "spanish"),
     ("french", "french"),
