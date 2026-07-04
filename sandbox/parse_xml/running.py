@@ -1,8 +1,8 @@
 import json
 
-import src.application.game_data.schema
-from src.infrastructure.xml_parcer.common.parser import UniversalXmlParser
-from src.infrastructure.xml_parcer.patterns import recipes
+import src.application.game_data.schemas.recipes
+from src.infrastructure.xml_parser.common.parser import UniversalXmlParser
+from src.infrastructure.xml_parser.patterns import recipes
 
 
 parser = UniversalXmlParser(
@@ -12,7 +12,7 @@ parser = UniversalXmlParser(
 
 final_data = parser.run()
 
-schema = src.application.game_data.schema.RecipesGameData.model_validate(final_data)
+schema = src.application.game_data.schemas.recipes.RecipesGameData.model_validate(final_data)
 
 
 with open("final_data.json", "w", encoding="utf-8") as f:

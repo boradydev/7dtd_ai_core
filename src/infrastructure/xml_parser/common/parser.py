@@ -2,7 +2,7 @@ from pathlib import Path
 from typing import Any
 from xml.etree import ElementTree
 
-from src.infrastructure.xml_parcer.common.excs import XmlParserError
+from src.infrastructure.xml_parser.common.excs import XmlParserError
 
 
 class UniversalXmlParser:

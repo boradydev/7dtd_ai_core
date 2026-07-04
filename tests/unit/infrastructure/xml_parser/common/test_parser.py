@@ -2,7 +2,7 @@ from pathlib import Path
 
 import pytest
 
-from src.infrastructure.xml_parcer.common.parser import UniversalXmlParser
+from src.infrastructure.xml_parser.common.parser import UniversalXmlParser
 
 
 current_dir = Path(__file__).resolve().parent
