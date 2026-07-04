@@ -17,7 +17,7 @@ from src.application.common.abcs import IGameAPI
 from src.application.common.ai.behavior import AIBehavior
 from src.infrastructure.db.postgres.database import Postgres
 from src.infrastructure.db.postgres.settings import PostgresSettings
-from src.infrastructure.db.postgres.uow.uow import ChatHistoriesUOW
+from src.infrastructure.db.postgres.uow.chat_histories import ChatHistoriesUOW
 from src.infrastructure.ollama_api.api import OllamaApi
 from src.infrastructure.ollama_api.config import AIModelConfig
 from src.infrastructure.ollama_api.instructions import SystemInstruction

@@ -1,6 +1,6 @@
 import pytest
 
-from src.infrastructure.db.postgres.uow.uow import ChatHistoriesUOW
+from src.infrastructure.db.postgres.uow.chat_histories import ChatHistoriesUOW
 
 
 @pytest.fixture
