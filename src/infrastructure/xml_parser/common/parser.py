@@ -56,7 +56,7 @@ class UniversalXmlParser:
 
     def __init__(
         self,
-        file_path: str,
+        file_path: str | Path,
         pattern: dict[str, Any],
     ) -> None:
         self._file_path = Path(file_path)

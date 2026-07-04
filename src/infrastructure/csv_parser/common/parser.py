@@ -18,7 +18,7 @@ class UniversalCsvParser:
 
     def __init__(
         self,
-        file_path: str,
+        file_path: str | Path,
         pattern: Sequence[tuple[str, str]],
     ) -> None:
         self._file_path = Path(file_path)
