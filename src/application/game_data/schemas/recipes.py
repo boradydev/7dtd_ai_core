@@ -11,7 +11,7 @@ class Ingredient(BaseModel):
         return int(value)
 
 
-class Recipe(BaseModel):
+class RecipeGameData(BaseModel):
     name: str
     output_count: int
     craft_station: str
@@ -35,4 +35,4 @@ class Recipe(BaseModel):
 
 
 class RecipesGameData(BaseModel):
-    recipes: list[Recipe]
+    recipes: list[RecipeGameData]
