@@ -1,0 +1,17 @@
+PATTERN = (
+    ("Key", "name"),
+    ("Type", "type"),
+    ("english", "english"),
+    ("german", "german"),
+    ("spanish", "spanish"),
+    ("french", "french"),
+    ("italian", "italian"),
+    ("japanese", "japanese"),
+    ("koreana", "koreana"),
+    ("polish", "polish"),
+    ("brazilian", "brazilian"),
+    ("russian", "russian"),
+    ("turkish", "turkish"),
+    ("schinese", "schinese"),
+    ("tchinese", "tchinese"),
+)
