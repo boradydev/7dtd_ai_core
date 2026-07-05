@@ -32,7 +32,7 @@ async def app(
     logger.info("Starting application...")
 
     _log_file = log_file or LogFile(
-        log_dir=app_settings.LOG_FOLDER_PATH,
+        log_dir=app_settings.LOG_FOLDER_DIR,
         find_pattern="sdtdserver-console*.log",
     )
 

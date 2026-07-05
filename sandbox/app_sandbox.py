@@ -87,7 +87,7 @@ async def main() -> None:
             break
 
         file_path = (
-            PROJECT_DIR / app_settings.LOG_FOLDER_PATH / "sdtdserver-console.log"
+            PROJECT_DIR / app_settings.LOG_FOLDER_DIR / "sdtdserver-console.log"
         )
         line = (
             f"2026-05-16T11:53:47 70867.715 INF Chat (from 'Steam_76561198001453454', "
