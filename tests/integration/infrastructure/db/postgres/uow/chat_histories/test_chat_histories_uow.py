@@ -24,17 +24,17 @@ dto.append_turn(
 
 
 async def test_save_chat_history(
-    uow,
+    chat_history_uow,
 ) -> None:
-    async with uow as db:
+    async with chat_history_uow as db:
         await db.histories.save(dto)
         await db.commit()
 
 
 async def test_find_chat_history(
-    uow,
+    chat_history_uow,
 ) -> None:
-    async with uow as db:
+    async with chat_history_uow as db:
         chat_history = await db.histories.find_by_player_id(player_id)
         assert chat_history is not None
         assert chat_history.history == history
