@@ -82,6 +82,7 @@ dev = [
     "hypothesis (>=6.151.9,<7.0.0)",
     "faker (>=40.5.1,<41.0.0)",
     "ftl-extract (>=0.10.0,<0.11.0)",
+    "pytest-timeout (>=2.4.0,<3.0.0)",
 ]
 
 [tool.pytest.ini_options]
