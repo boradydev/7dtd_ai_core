@@ -1,7 +1,7 @@
 CREATE EXTENSION IF NOT EXISTS pg_trgm;
 CREATE TABLE ai.localization
 (
-    key               TEXT        NOT NULL,
+    key               TEXT PRIMARY KEY,
 
     file              TEXT,
     type              TEXT,
