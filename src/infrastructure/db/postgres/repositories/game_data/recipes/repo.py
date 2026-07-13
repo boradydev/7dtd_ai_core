@@ -4,7 +4,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.application.game_data.abcs import IRecipesRepository
 from src.application.game_data.common.localization.languages import LocalizationLanguage
-from src.application.game_data.dtos import SearchRecipeDTO
+from src.application.game_data.dtos import RecipeDTO, SearchRecipeDTO
 from src.application.game_data.schemas.recipes import RecipeGameData
 from src.infrastructure.db.postgres.repositories.game_data.recipes.sql.registry import (
     SQL,
@@ -52,6 +52,16 @@ class RecipesRepository(IRecipesRepository):
         rows = result.mappings().all()
 
         return [SearchRecipeDTO(**row) for row in rows]
+
+    async def list_by_key(self, key: str) -> list[RecipeDTO]:
+        params = dict(key=key)
+        result = await self._session.execute(
+            SQL.LIST_BY_KEY,
+            params,
+        )
+        rows = result.mappings().all()
+
+        return [RecipeDTO(**row) for row in rows]
 
     async def clear(self) -> None:
         await self._session.execute(SQL.CLEAR)

@@ -10,6 +10,7 @@ from src.infrastructure.db.postgres.repositories.game_data.common.sql.registry i
 class SQL(CommonSQL):
     ADD_MANY = text(sql_reader("add_many.sql", __file__))
     CLEAR = text(sql_reader("clear.sql", __file__))
+    LIST_BY_KEY = text(sql_reader("list_by_key.sql", __file__))
 
     @classmethod
     def GET_SEARCH_BY_FUZZY(cls, config: LocalizationConfig) -> TextClause:

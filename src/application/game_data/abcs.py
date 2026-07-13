@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 
 from src.application.game_data.common.localization.languages import LocalizationLanguage
-from src.application.game_data.dtos import SearchRecipeDTO
+from src.application.game_data.dtos import RecipeDTO, SearchRecipeDTO
 from src.application.game_data.schemas.localization import LocalizationGameData
 from src.application.game_data.schemas.recipes import RecipeGameData
 from src.domain.common.abcs import InterfaceUOW
@@ -28,6 +28,11 @@ class IRecipesRepository(ABC):
     @abstractmethod
     async def clear(self) -> None:
         """Отчищает таблицу."""
+        raise NotImplementedError
+
+    @abstractmethod
+    async def list_by_key(self, key: str) -> list[RecipeDTO]:
+        """Ищет все рецепты по ключу."""
         raise NotImplementedError
 
 
@@ -67,6 +72,6 @@ class IGameDataExtractor(ABC):
         raise NotImplementedError
 
     @abstractmethod
-    def localization(self) -> LocalizationGameData:
+    def localization(self) -> list[LocalizationGameData]:
         """Данные рецептов."""
         raise NotImplementedError

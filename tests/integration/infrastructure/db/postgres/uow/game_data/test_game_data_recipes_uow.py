@@ -7,7 +7,7 @@ from src.infrastructure.xml_parser.patterns.recipes import PATTERN
 
 
 @pytest.fixture
-async def recipes_data(game_data_uow, config_dir) -> None:
+async def loaded_recipes(game_data_uow, config_dir) -> None:
     file_path = config_dir / "recipes.xml"
 
     parser = UniversalXmlParser(
@@ -20,11 +20,7 @@ async def recipes_data(game_data_uow, config_dir) -> None:
     async with game_data_uow as uow:
         await uow.recipes.clear()
 
-        recipes = [
-            recipe
-            for recipe in game_data.recipes
-            if recipe.is_craftable
-        ]
+        recipes = [recipe for recipe in game_data.recipes if recipe.is_craftable]
 
         await uow.recipes.add_many(recipes)
         await uow.commit()
@@ -32,7 +28,7 @@ async def recipes_data(game_data_uow, config_dir) -> None:
 
 @pytest.mark.timeout(1)
 async def test_game_data_recipes_search_by_fuzzy_returns_results(
-    recipes_data,
+    loaded_recipes,
     game_data_uow,
 ) -> None:
     async with game_data_uow as uow:
@@ -47,7 +43,7 @@ async def test_game_data_recipes_search_by_fuzzy_returns_results(
 
 @pytest.mark.timeout(1)
 async def test_game_data_recipes_search_by_fuzzy_scores(
-    recipes_data,
+    loaded_recipes,
     game_data_uow,
 ) -> None:
     async with game_data_uow as uow:
@@ -64,7 +60,7 @@ async def test_game_data_recipes_search_by_fuzzy_scores(
 
 @pytest.mark.timeout(1)
 async def test_game_data_recipes_search_by_fuzzy_returns_empty_list(
-    recipes_data,
+    loaded_recipes,
     game_data_uow,
 ) -> None:
     async with game_data_uow as uow:
@@ -78,7 +74,7 @@ async def test_game_data_recipes_search_by_fuzzy_returns_empty_list(
 
 @pytest.mark.timeout(1)
 async def test_game_data_recipes_search_by_fuzzy_multilanguage(
-    recipes_data,
+    loaded_recipes,
     game_data_uow,
 ) -> None:
     async with game_data_uow as uow:
@@ -99,7 +95,7 @@ async def test_game_data_recipes_search_by_fuzzy_multilanguage(
 
 @pytest.mark.timeout(1)
 async def test_game_data_recipes_search_by_fuzzy_sorted_by_score(
-    recipes_data,
+    loaded_recipes,
     game_data_uow,
 ) -> None:
     async with game_data_uow as uow:
@@ -115,7 +111,7 @@ async def test_game_data_recipes_search_by_fuzzy_sorted_by_score(
 
 @pytest.mark.timeout(1)
 async def test_game_data_recipes_search_by_fuzzy_typo(
-    recipes_data,
+    loaded_recipes,
     game_data_uow,
 ) -> None:
     async with game_data_uow as uow:
@@ -123,6 +119,18 @@ async def test_game_data_recipes_search_by_fuzzy_typo(
             text="pisotl",
             lang=LocalizationLanguage.ENGLISH,
         )
+
+    assert dtos
+    assert dtos[0].key == "gunHandgunT1Pistol"
+
+
+@pytest.mark.timeout(1)
+async def test_game_data_recipes_list_by_key_returns_results(
+    loaded_recipes,
+    game_data_uow,
+) -> None:
+    async with game_data_uow as uow:
+        dtos = await uow.recipes.list_by_key(key="gunHandgunT1Pistol")
 
     assert dtos
     assert dtos[0].key == "gunHandgunT1Pistol"
