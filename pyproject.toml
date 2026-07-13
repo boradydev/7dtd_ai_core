@@ -40,6 +40,9 @@ extend-unsafe-fixes = [
     "D416"
 ]
 
+[tool.ruff.lint.per-file-ignores]
+"tests/**/*.py" = ["ARG001"]
+
 [tool.ruff.lint.isort]
 combine-as-imports = true
 lines-after-imports = 2
