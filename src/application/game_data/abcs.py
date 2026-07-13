@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
 
-from src.application.game_data.dtos import RecipeDTO
+from src.application.game_data.common.localization.languages import LocalizationLanguage
+from src.application.game_data.dtos import SearchRecipeDTO
 from src.application.game_data.schemas.localization import LocalizationGameData
 from src.application.game_data.schemas.recipes import RecipeGameData
 from src.domain.common.abcs import InterfaceUOW
@@ -16,8 +17,12 @@ class IRecipesRepository(ABC):
         raise NotImplementedError
 
     @abstractmethod
-    async def find_all(self, recipe_name: str) -> list[RecipeDTO]:
-        """Ищет все рецепты предмета."""
+    async def search_by_fuzzy(
+        self,
+        text: str,
+        lang: LocalizationLanguage,
+    ) -> list[SearchRecipeDTO]:
+        """Нечеткий поиск рецептов по текстовому названию предмета."""
         raise NotImplementedError
 
     @abstractmethod

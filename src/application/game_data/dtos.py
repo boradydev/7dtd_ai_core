@@ -4,5 +4,13 @@ from typing import Any
 
 @dataclass
 class RecipeDTO:
-    name: str
+    key: str
     raw_data: dict[str, Any]
+
+@dataclass
+class SearchRecipeDTO:
+    key: str
+    name: str
+    fts_score: float
+    trigram_score: float
+    total_score: float

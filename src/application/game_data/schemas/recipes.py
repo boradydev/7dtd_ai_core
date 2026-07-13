@@ -12,7 +12,7 @@ class Ingredient(BaseModel):
 
 
 class RecipeGameData(BaseModel):
-    name: str
+    key: str
     output_count: int
     craft_station: str
     required_ingredients: list[Ingredient]
@@ -32,6 +32,10 @@ class RecipeGameData(BaseModel):
     @property
     def raw_data(self):
         return self.model_dump()
+
+    @property
+    def is_craftable(self) -> bool:
+        return bool(self.required_ingredients)
 
 
 class RecipesGameData(BaseModel):
