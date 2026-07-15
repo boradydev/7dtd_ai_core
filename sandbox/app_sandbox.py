@@ -11,10 +11,10 @@ from io import TextIOWrapper
 
 import dotenv
 
-from src.application.common.abcs import IGameAPI
+from src.app.common.abcs import IGameAPI
 from src.core.paths import PROJECT_DIR
-from src.infrastructure.filesystem.log_reader.log_file import LogFile
-from src.presentation.log_dispatchers.game.app import app
+from src.infra.filesystem.log_reader.log_file import LogFile
+from src.api.log_dispatchers.game.bootstrap import run_game_dispatcher
 from src.settings import AppSettings
 
 
@@ -56,7 +56,7 @@ async def main() -> None:
     )
 
     app_task = asyncio.create_task(
-        app(
+        run_game_dispatcher(
             app_settings=app_settings,
             game_api=fake_game_api,
             log_file=log_file,

@@ -3,7 +3,7 @@ import logging
 
 import dotenv
 
-from src.presentation.log_dispatchers.game.app import app
+from src.api.log_dispatchers.game.bootstrap import run_game_dispatcher
 from src.settings import AppSettings
 
 
@@ -13,7 +13,7 @@ async def main() -> None:
     logging.basicConfig(
         level=logging.DEBUG if app_settings.DEBUG_MODE else logging.INFO,
     )
-    await app(app_settings)
+    await run_game_dispatcher(app_settings)
 
 
 if __name__ == "__main__":

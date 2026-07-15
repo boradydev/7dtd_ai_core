@@ -5,7 +5,7 @@ from unittest.mock import MagicMock
 import pytest
 from dotenv import load_dotenv
 
-from src.application.common.abcs import ILogger
+from src.app.common.abcs import ILogger
 
 
 def pytest_configure():
