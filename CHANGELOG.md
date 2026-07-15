@@ -1,10 +1,10 @@
 # Changelog
 
-* [x] [OllamaApi](src/infrastructure/ollama_api/api.py)
-* [x] [GameAPI](src/infrastructure/game_api/api.py)
+* [x] [OllamaApi](src/infra/ollama_api/api.py)
+* [x] [GameAPI](src/infra/game_api/api.py)
 * [x] LanguageTool и словарь исключений
 * [x] Настроить Docker-конфигурацию
-* [x] [LogFile](src/infrastructure/filesystem/log_reader/log_file.py) с ротацией
+* [x] [LogFile](src/infra/filesystem/log_reader/log_file.py) с ротацией
 * [x] Диспетчер логов
 * [x] Маршруты для вызова use cases
 * [x] Запуск PostgreSQL

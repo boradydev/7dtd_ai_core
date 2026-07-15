@@ -9,18 +9,18 @@ import logging
 import sys
 from io import TextIOWrapper
 
-from src.application.chat_messages.abcs import IMessageBuilder
-from src.application.chat_messages.cases import ChatMessageCase
-from src.application.chat_messages.dtos import GlobalChatDTO
-from src.application.chat_messages.services import MessageBuilder
-from src.application.common.abcs import IGameAPI
-from src.application.common.ai.behavior import AIBehavior
-from src.infrastructure.db.postgres.database import Postgres
-from src.infrastructure.db.postgres.settings import PostgresSettings
-from src.infrastructure.db.postgres.uow.chat_histories import ChatHistoriesUOW
-from src.infrastructure.ollama_api.api import OllamaApi
-from src.infrastructure.ollama_api.config import AIModelConfig
-from src.infrastructure.ollama_api.instructions import SystemInstruction
+from src.app.chat_messages.abcs import IMessageBuilder
+from src.app.chat_messages.cases import ChatMessageCase
+from src.app.chat_messages.dtos import GlobalChatDTO
+from src.app.chat_messages.services import MessageBuilder
+from src.app.common.abcs import IGameAPI
+from src.app.common.ai.behavior import AIBehavior
+from src.infra.db.postgres.database import Postgres
+from src.infra.db.postgres.settings import PostgresSettings
+from src.infra.db.postgres.uow.chat_histories import ChatHistoriesUOW
+from src.infra.ollama_api.api import OllamaApi
+from src.infra.ollama_api.config import AIModelConfig
+from src.infra.ollama_api.instructions import SystemInstruction
 
 
 postgres_settings = PostgresSettings(

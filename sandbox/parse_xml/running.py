@@ -1,8 +1,8 @@
 import json
 
-import src.application.game_data.schemas.recipes
-from src.infrastructure.xml_parser.common.parser import UniversalXmlParser
-from src.infrastructure.xml_parser.patterns import recipes
+import src.app.game_data.schemas.recipes
+from src.infra.xml_parser.common.parser import UniversalXmlParser
+from src.infra.xml_parser.patterns import recipes
 
 
 parser = UniversalXmlParser(
