@@ -9,14 +9,12 @@ from src.app.chat_messages.abcs import (
 from src.infra.db.postgres.repos.chat_histories.repo import (
     ChatHistoriesRepository,
 )
+from src.infra.db.postgres.repos.game_data.items.repo import ItemsRepository
+from src.infra.db.postgres.repos.game_data.recipes.repo import RecipesRepository
 from src.infra.db.postgres.uow.common import IPostgresUOW
 
 
 class ChatHistoriesUOW(IPostgresUOW, IChatHistoriesUOW):
-    @property
-    def histories(self) -> IChatHistoriesRepository:
-        return self._histories
-
     def __init__(
         self,
         session_factory: async_sessionmaker[AsyncSession],
@@ -26,6 +24,8 @@ class ChatHistoriesUOW(IPostgresUOW, IChatHistoriesUOW):
 
         Включает:
             ``ChatHistoriesRepository``
+            ``RecipesRepository``,
+            ``ItemsRepository``,
         """
         self._session_factory = session_factory
 
@@ -35,4 +35,22 @@ class ChatHistoriesUOW(IPostgresUOW, IChatHistoriesUOW):
         self._histories = ChatHistoriesRepository(
             session=self._session,
         )
+        self._recipes = RecipesRepository(
+            session=self._session,
+        )
+        self._items = ItemsRepository(
+            session=self._session,
+        )
         return self
+
+    @property
+    def histories(self) -> IChatHistoriesRepository:
+        return self._histories
+
+    @property
+    def recipes(self) -> RecipesRepository:
+        return self._recipes
+
+    @property
+    def items(self) -> ItemsRepository:
+        return self._items

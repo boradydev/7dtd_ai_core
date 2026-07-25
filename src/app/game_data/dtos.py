@@ -8,7 +8,7 @@ class RecipeDTO:
     raw_data: dict[str, Any]
 
 @dataclass
-class SearchRecipeDTO:
+class MatchedItemDTO:
     key: str
     name: str
     fts_score: float

@@ -3,6 +3,7 @@ from typing import Self
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker
 
 from src.app.game_data.abcs import IGameDataUOW
+from src.infra.db.postgres.repos.game_data.items.repo import ItemsRepository
 from src.infra.db.postgres.repos.game_data.localization.repo import (
     LocalizationRepository,
 )
@@ -23,6 +24,7 @@ class GameDataUOW(IPostgresUOW, IGameDataUOW):
         Включает:
             ``RecipesRepository``,
             ``LocalizationRepository``
+            ``ItemsRepository``,
         """
         self._session_factory = session_factory
 
@@ -35,6 +37,9 @@ class GameDataUOW(IPostgresUOW, IGameDataUOW):
         self._localization = LocalizationRepository(
             session=self._session,
         )
+        self._items = ItemsRepository(
+            session=self._session,
+        )
         return self
 
     @property
@@ -44,3 +49,7 @@ class GameDataUOW(IPostgresUOW, IGameDataUOW):
     @property
     def localization(self) -> LocalizationRepository:
         return self._localization
+
+    @property
+    def items(self) -> ItemsRepository:
+        return self._items
