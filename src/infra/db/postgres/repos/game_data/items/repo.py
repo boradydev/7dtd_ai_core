@@ -29,7 +29,7 @@ class ItemsRepository(IItemsRepository):
             threshold=self._THRESHOLD,
         )
         result = await self._session.execute(
-            SQL.GET_SEARCH_BY_FUZZY(lang.config),
+            SQL.get_search_by_fuzzy(lang.config),
             params,
         )
         rows = result.mappings().all()
