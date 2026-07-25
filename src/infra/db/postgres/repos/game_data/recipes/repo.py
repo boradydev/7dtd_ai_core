@@ -3,8 +3,7 @@ import json
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.app.game_data.abcs import IRecipesRepository
-from src.app.game_data.common.localization.languages import LocalizationLanguage
-from src.app.game_data.dtos import RecipeDTO, MatchedItemDTO
+from src.app.game_data.dtos import RecipeDTO
 from src.app.game_data.schemas.recipes import RecipeGameData
 from src.infra.db.postgres.repos.game_data.recipes.sql.registry import (
     SQL,
@@ -12,8 +11,6 @@ from src.infra.db.postgres.repos.game_data.recipes.sql.registry import (
 
 
 class RecipesRepository(IRecipesRepository):
-    _THRESHOLD = 0.2
-
     def __init__(
         self,
         session: AsyncSession,
@@ -33,25 +30,6 @@ class RecipesRepository(IRecipesRepository):
                 )
             )
         await self._session.execute(SQL.ADD_MANY, params)
-
-    async def search_by_fuzzy(
-        self,
-        text: str,
-        lang: LocalizationLanguage = LocalizationLanguage.ENGLISH,
-    ) -> list[MatchedItemDTO]:
-        params = dict(
-            text=text,
-            file="items",
-            limit=10,
-            threshold=self._THRESHOLD,
-        )
-        result = await self._session.execute(
-            SQL.GET_SEARCH_BY_FUZZY(lang.config),
-            params,
-        )
-        rows = result.mappings().all()
-
-        return [MatchedItemDTO(**row) for row in rows]
 
     async def list_by_key(self, key: str) -> list[RecipeDTO]:
         params = dict(key=key)
