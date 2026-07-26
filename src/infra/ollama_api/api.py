@@ -1,9 +1,12 @@
 import logging
 from collections.abc import AsyncGenerator
+from typing import Any
 
 from ollama import AsyncClient
+from sqlalchemy import false
 
 from src.app.chat_messages.abcs import IAIClient
+from src.app.chat_messages.dtos import ToolCalledDTO
 from src.app.common.ai.abcs import IModelConfig, ISystemInstructions
 
 
@@ -79,6 +82,130 @@ class OllamaApi[Behavior](IAIClient[Behavior]):
         if history:
             messages.extend(history)
         messages.append({"role": "user", "content": message})
+
+        attempt = 0
+        while True:
+            try:
+                response_stream = await self._client.chat(
+                    model=self._model_name,
+                    messages=messages,
+                    options=self._options.get(behavior),
+                    stream=True,
+                )
+                break
+            except Exception as exc:
+                attempt += 1
+                self._logger.warning(self._ATTEMPT_MSG.format(attempt=attempt))
+                if attempt >= 3:
+                    raise exc
+
+        async for token in response_stream:
+            if token.message and token.message.content:
+                yield token.message.content
+
+    async def predict_tool_calls(
+        self,
+        behavior: Behavior,
+        message: str,
+        tools: list[dict[str, Any]],
+        history: list[dict[str, str]] | None = None,
+    ) -> list[ToolCalledDTO] | None:
+        """
+        Проверяет, намерена ли модель вызвать инструменты (tools).
+
+        Возвращает структуру вызовов функций или None, если вызов не требуется.
+
+        Args:
+            behavior: Поведение ИИ (из него берутся базовые опции/инструкции).
+            message: Текущее сообщение пользователя.
+            tools: Список доступных схем инструментов.
+            history: История сообщений (без системного промпта).
+        """
+        base_instruction = self._instructions.get(behavior)
+        messages = [{"role": "system", "content": base_instruction}]
+        if history:
+            messages.extend(history)
+        messages.append({"role": "user", "content": message})
+
+        options = self._options.get(behavior) or {}
+
+        attempt = 0
+        while True:
+            try:
+                response = await self._client.chat(
+                    model=self._model_name,
+                    messages=messages,
+                    think=False,
+                    tools=tools,
+                    options=options,
+                    stream=False,
+                )
+                break
+            except Exception as exc:
+                attempt += 1
+                self._logger.warning(self._ATTEMPT_MSG.format(attempt=attempt))
+                if attempt >= 3:
+                    raise exc
+
+        if response.message and response.message.tool_calls:
+            functions = []
+            for tool_call in response.message.tool_calls:
+                functions.append(
+                    ToolCalledDTO(
+                        function_name=tool_call.function.name,
+                        kwargs=tool_call.function.arguments,
+                    )
+                )
+
+            return functions
+
+        return None
+
+    async def generate_tool_response(
+        self,
+        behavior: Behavior,
+        tool_context: list[dict[str, Any]],
+        history: list[dict[str, Any]] | None = None,
+    ) -> AsyncGenerator[str]:
+        """
+        Генерирует финальный текстовый ответ пользователю на основе роли 'tool'.
+
+        Принимает только историю, не мутирует её и не добавляет лишних user-сообщений.
+
+        Args:
+            behavior: Поведение ИИ, определяющее итоговый характер и язык ответа.
+            tool_context: Обязательная цепочка сообщений выполнения инструмента.
+            history: Предыдущая история переписки игрока (без роли system).
+
+        Пример формата tool_context:
+            [
+                {
+                    "role": "user",
+                    "content": "Сколько у меня ХП?"
+                },
+                {
+                    "role": "assistant",
+                    "content": "",
+                    "tool_calls": [
+                        {
+                            "function": {
+                                "name": "get_player_stats",
+                                "arguments": {"steam_id": "76561198111111111"}
+                            }
+                        }
+                    ]
+                },
+                {
+                    "role": "tool",
+                    "name": "get_player_stats",
+                    "content": "{"health": "115/120", "level": 42}"
+                }
+            ]
+        """
+        messages = [{"role": "system", "content": self._instructions.get(behavior)}]
+        if history:
+            messages.extend(history)
+        messages.extend(tool_context)
 
         attempt = 0
         while True:
