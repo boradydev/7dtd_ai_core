@@ -9,9 +9,11 @@ class AIBehavior(str, Enum):
     ASSISTANT Помощь игрокам по правилам, рецептам (temp = 0.3)
     STORYTELLER Генератор игровых ивентов, квестов, лора (temp = 0.7)
     ENTERTAINER Шутки, токсичные ответы зомби, флуд в чате (temp = 0.9).
+    TOOL_ROUTER Для намерения вызвать tool calling (temp = 0.0)
     """
 
     MODERATOR = "moderator"
     ASSISTANT = "assistant"
     STORYTELLER = "storyteller"
     ENTERTAINER = "entertainer"
+    TOOL_ROUTER = "tool_router"

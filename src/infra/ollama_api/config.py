@@ -65,6 +65,12 @@ class AIModelConfig(IModelConfig[AIBehavior]):
             "repeat_penalty": 1.1,
             "num_predict": 150,
         },
+        AIBehavior.TOOL_ROUTER: {
+            "temperature": 0.0,
+            "top_p": 0.0,
+            "repeat_penalty": 1.0,
+            "num_predict": 64,
+        },
     }
 
     @classmethod
