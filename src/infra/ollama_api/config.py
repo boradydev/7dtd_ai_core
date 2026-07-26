@@ -69,7 +69,7 @@ class AIModelConfig(IModelConfig[AIBehavior]):
             "temperature": 0.0,
             "top_p": 0.0,
             "repeat_penalty": 1.0,
-            "num_predict": 64,
+            "num_predict": 128,
         },
     }
 
